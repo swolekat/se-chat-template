@@ -1,0 +1,67 @@
+{
+  "largeEmotes": {
+    "label": "Larger emotes for emote messages?",
+    "group": "Presentation Options",
+    "type": "dropdown",
+    "value": "true",
+    "options": {
+      "true": "Yes",
+      "false": "No"
+    }
+  },
+  "raidMessages": {
+    "label": "Show Messages for Raids?",
+    "group": "Presentation Options",
+    "type": "dropdown",
+    "value": "true",
+    "options": {
+      "true": "Yes",
+      "false": "No"
+    }
+  },
+  "subMessages": {
+    "label": "Show Messages for Subs?",
+    "group": "Presentation Options",
+    "type": "dropdown",
+    "value": "true",
+    "options": {
+      "true": "Yes",
+      "false": "No"
+    }
+  },
+  "ignoreUserListLabel": {
+    "label": "Ignore these users:",
+    "group": "Bot Filters",
+    "type": "hidden"
+  },
+  "ignoreUserList": {
+    "label": "(Comma Separated)",
+    "group": "Bot Filters",
+    "type": "text",
+    "value": "StreamElements, Streamlabs, Nightbot"
+  },
+  "ignorePrefixListLabel": {
+    "label": "Ignore messages that start with:",
+    "group": "Bot Filters",
+    "type": "hidden"
+  },
+  "ignorePrefixList": {
+    "label": "(Comma Separated)",
+    "group": "Bot Filters",
+    "type": "text",
+    "value": "!"
+  },
+  "lifetimeLabel": {
+    "label": "Hide bubbles after this many seconds",
+    "group": "Timing",
+    "type": "hidden"
+  },
+  "lifetime": {
+    "label": "(Set to 0 to never hide)",
+    "group": "Timing",
+    "type": "number",
+    "value": 10,
+    "step": 1,
+    "min": 0
+  }
+}
