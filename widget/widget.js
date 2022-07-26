@@ -125,6 +125,45 @@ const createMessageHtml = ({
     `;
 };
 
+const createRaidMessageHtml = ({
+                                   displayName, msgId, amount
+}) => {
+    // don't mess with data-message-id, data-user-id or the chat-message class name
+    return `
+        <div data-message-id="${msgId}" class="chat-message raid-message">
+            <div class="raid-message-content">
+                WOWZERS ${displayName} JUST RAIDED WITH ${amount} PEOPLE!
+            </div>
+        </div>
+    `;
+};
+
+const createSubMessageHtml = ({
+                                   displayName, msgId
+                               }) => {
+    // don't mess with data-message-id, data-user-id or the chat-message class name
+    return `
+        <div data-message-id="${msgId}" class="chat-message sub-message">
+            <div class="raid-message-content">
+                POGGIES ${displayName} JUST SUBBED!
+            </div>
+        </div>
+    `;
+};
+
+const createFollowerMessageHtml = ({
+                                  displayName, msgId
+                              }) => {
+    // don't mess with data-message-id, data-user-id or the chat-message class name
+    return `
+        <div data-message-id="${msgId}" class="chat-message follower-message">
+            <div class="raid-message-content">
+                WOWZERS ${displayName} JUST FOLLOWED! THANK YOU!
+            </div>
+        </div>
+    `;
+};
+
 // stop customization here unless you know what you're doing fr fr ong
 // these are the guts
 
@@ -161,6 +200,7 @@ const processFieldData = (fieldData) => {
     data.largeEmotes = fieldData.largeEmotes === 'true';
     data.raidMessages = fieldData.raidMessages === 'true';
     data.subMessages = fieldData.subMessages === 'true';
+    data.followMessages = fieldData.followMessages === 'true';
     data.ignoreUserList = fieldData.ignoreUserList.split(',');
     data.ignorePrefixList = fieldData.ignorePrefixList.split(',');
     data.lifetime = fieldData.lifetime;
@@ -207,6 +247,9 @@ const processMessageText = (text, emotes) => {
 const isEmoteZeroWidth = (emoteText) =>  ZERO_WIDTH_EMOTES.includes(emoteText);
 
 const calcEmoteSize = (messageContentsArray) => {
+    if(!data.largeEmotes){
+        return 'small-emotes';
+    }
     const hasText = messageContentsArray.filter(({type}) => type !== 'emote').length > 0;
     if(hasText){
         return 'small-emotes';
@@ -293,6 +336,22 @@ const getUrlFromEmoteSizeAndData = (data, emoteSize) => {
     return data.urls["1"];
 };
 
+const showMessage = (msgId, html) => {
+    const messageElementId = `.chat-message[data-message-id="${msgId}"]`;
+    $('main').prepend(html);
+
+    $(messageElementId).addClass('animate');
+    if(data.lifetime === 0){
+        $(messageElementId).addClass('forever');
+        return;
+    }
+    if (data.lifetime > 0) {
+        window.setTimeout(_ => {
+            onDeleteMessage({msgId})
+        }, data.lifetime * 1000 )
+    }
+};
+
 const createAndShowMessage = (event) => {
     const {
         badges = [],
@@ -306,25 +365,13 @@ const createAndShowMessage = (event) => {
 
     const messageContentsArray = processMessageText(htmlEncode(text), emotes);
     const emoteSize = calcEmoteSize(messageContentsArray);
-    const messageElementId = `.chat-message[data-message-id="${msgId}"]`;
     const eventClasses = getClassFromEventData({userId, badges, name});
 
     const html = createMessageHtml({
         badges, userId, displayName, messageContentsArray, msgId, color, emoteSize, eventClasses
     });
 
-    $('main').prepend(html);
-
-    $(messageElementId).addClass('animate');
-    if(data.lifetime === 0){
-        $(messageElementId).addClass('forever');
-        return;
-    }
-    if (data.lifetime > 0) {
-        window.setTimeout(_ => {
-            onDeleteMessage({msgId})
-        }, data.lifetime * 1000 )
-    }
+    showMessage(msgId, html);
 };
 
 const cleanUpMessages = () => {
@@ -352,7 +399,14 @@ const onMessage = (event) => {
 /* other events */
 const onRaid = (event) => {
     const name = event?.event?.name;
+    const amount = event?.event?.amount;
     data.latestRaider = name;
+    if(!data.raidMessages){
+        return;
+    }
+    const msgId = `raid-${name}`;
+    const html = createRaidMessageHtml({displayName: name, msgId , amount});
+    showMessage(msgId, html);
 };
 
 const onDeleteMessage = (event) => {
@@ -378,11 +432,23 @@ const onDeleteMessages = (event) => {
 const onFollower = (event) => {
     const name = event?.event?.name;
     data.latestFollower = name;
+    if(!data.followMessages){
+        return;
+    }
+    const msgId = `follower-${name}`;
+    const html = createFollowerMessageHtml({displayName: name, msgId });
+    showMessage(msgId, html);
 };
 
 const onSubscriber = (event) => {
     const name = event?.event?.name;
     data.latestSubscriber = name;
+    if(!data.subMessages){
+        return;
+    }
+    const msgId = `subscriber-${name}`;
+    const html = createSubMessageHtml({displayName: name, msgId });
+    showMessage(msgId, html);
 };
 
 const onCheer = (event) => {

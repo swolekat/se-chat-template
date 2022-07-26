@@ -29,6 +29,16 @@
       "false": "No"
     }
   },
+  "followMessages": {
+    "label": "Show Messages for Follows?",
+    "group": "Presentation Options",
+    "type": "dropdown",
+    "value": "true",
+    "options": {
+      "true": "Yes",
+      "false": "No"
+    }
+  },
   "ignoreUserListLabel": {
     "label": "Ignore these users:",
     "group": "Bot Filters",
