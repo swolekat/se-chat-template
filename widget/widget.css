@@ -121,3 +121,27 @@ animation: fade reverse .5s,
     left: 0;
     background: transparent !important;
 }
+
+.raid-message {
+    background: #888888;
+    font-size: 72px;
+    padding: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.sub-message {
+    background: #888888;
+    font-size: 72px;
+    padding: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.follower-message {
+    background: #888888;
+    font-size: 72px;
+    padding: 20px;
+    font-weight: bold;
+    text-align: center;
+}
