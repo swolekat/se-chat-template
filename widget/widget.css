@@ -15,11 +15,9 @@ main {
     align-content: start;
     overflow: visible;
     padding: 30px;
+    flex-direction: column-reverse;
+    height: 100%;
 }
-
-
-
-/* --- [Animations] --- */
 
 @keyframes fade {
     from { opacity: 1; }
@@ -36,14 +34,24 @@ main {
     margin-top: 15px;
     visibility: hidden;
     position: relative;
+    border: 3px solid #000;
+    border-radius: 20px;
+    overflow: hidden;
+    min-width: 300px;
+    max-width: 500px;
+    width: var(--dynamicWidth);
 }
 
 .chat-message.animate {
     visibility: visible;
-    animation: fade reverse .5s,
+animation: fade reverse .5s,
                           fade .5s calc({lifetime}s - .5s) forwards,
                                                            up .5s,
                                                                 up reverse .5s calc({lifetime}s - .5s) forwards;
+}
+
+.chat-message.animate .username-section {
+    width: 100%;
 }
 
 .chat-message.animate.forever {
@@ -54,18 +62,38 @@ main {
 .username-section {
     position: relative;
     z-index: 2;
+    background: #888;
+    height: 40px;
+    padding: 0 10px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    line-height: 40px;
+    display: inline-block;
 }
 
-.badge {
+.username-section.white-text {
+    color: #fff;
+}
 
+
+.badge {
+    height: 20px;
+    width: 20px;
+    margin-right: 5px;
 }
 
 .message-section {
-
+    padding: 10px;
+    background: #fff;
 }
 
 .message-wrapper {
 
+}
+
+.large-emotes .message-section {
+    text-align: center;
 }
 
 .large-emotes .emote {

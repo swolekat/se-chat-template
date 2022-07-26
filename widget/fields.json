@@ -62,7 +62,7 @@
     "value": "!"
   },
   "lifetimeLabel": {
-    "label": "Hide bubbles after this many seconds",
+    "label": "Hide messages after this many seconds",
     "group": "Timing",
     "type": "hidden"
   },

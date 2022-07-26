@@ -102,6 +102,15 @@ const convertMessageContentsArrayToHtml = (messageContentsArray, emoteSize) => {
     return parsedElements.join('\n');
 };
 
+const isColorLight = (color) => {
+    const parsedColor = +("0x" + color.slice(1).replace(color.length < 5 && /./g, '$&$&'));
+    const r = parsedColor >> 16;
+    const g = parsedColor >> 8 & 255;
+    const b = parsedColor & 255;
+    const hsp = Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b));
+    return hsp > 127.5;
+}
+
 const createMessageHtml = ({
                                badges, userId, displayName, messageContentsArray, msgId, color, emoteSize, eventClasses,
                            }) => {
@@ -111,8 +120,8 @@ const createMessageHtml = ({
 
     // don't mess with data-message-id, data-user-id or the chat-message class name
     return `
-        <div data-message-id="${msgId}" data-user-id="${userId}" class="chat-message ${emoteSize} ${eventClasses} ${textClass}">
-            <div class="username-section" style="color: ${color}">
+        <div data-message-id="${msgId}" data-user-id="${userId}" class="chat-message ${emoteSize} ${eventClasses} ${textClass}" >
+            <div class="username-section ${isColorLight(color) ? '' : 'white-text'}" style="background: ${color}">
                 ${badgeHtml}
                 ${displayName}
             </div>
@@ -340,16 +349,26 @@ const showMessage = (msgId, html) => {
     const messageElementId = `.chat-message[data-message-id="${msgId}"]`;
     $('main').prepend(html);
 
-    $(messageElementId).addClass('animate');
-    if(data.lifetime === 0){
-        $(messageElementId).addClass('forever');
-        return;
-    }
-    if (data.lifetime > 0) {
-        window.setTimeout(_ => {
-            onDeleteMessage({msgId})
-        }, data.lifetime * 1000 )
-    }
+    // must do the delay to calculate the dynamic width
+    setTimeout(() => {
+        const maxWidth = $(`${messageElementId} .message-wrapper`).width() + 1;
+        const minWidth = $(`${messageElementId} .username-section`).outerWidth();
+
+        $(`${messageElementId}`).css({
+            '--dynamicWidth': Math.max(minWidth, maxWidth),
+        });
+
+        $(messageElementId).addClass('animate');
+        if(data.lifetime === 0){
+            $(messageElementId).addClass('forever');
+            return;
+        }
+        if (data.lifetime > 0) {
+            window.setTimeout(_ => {
+                onDeleteMessage({msgId})
+            }, data.lifetime * 1000 )
+        }
+    }, 1000);
 };
 
 const createAndShowMessage = (event) => {
@@ -360,7 +379,7 @@ const createAndShowMessage = (event) => {
         emotes = [],
         text = '',
         msgId = '',
-        color
+        displayColor: color
     } = event.data;
 
     const messageContentsArray = processMessageText(htmlEncode(text), emotes);
