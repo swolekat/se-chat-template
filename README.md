@@ -1,5 +1,5 @@
 # Stream Elements Chat Template
-This is a basic, un-opinionated chat template that you can use as a springboard for your own custom chat.
+This is a basic, un-opinionated (as possible) chat template that you can use as a springboard for your own custom chat.
 
 Supported features out of the box
 * 7tv Zero Width Emote support
