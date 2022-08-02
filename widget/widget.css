@@ -76,7 +76,6 @@ animation: fade reverse .5s,
     color: #fff;
 }
 
-
 .badge {
     height: 20px;
     width: 20px;
@@ -85,11 +84,11 @@ animation: fade reverse .5s,
 
 .message-section {
     padding: 10px;
-    background: #fff;
+    background: #FFFAE4;
 }
 
 .message-wrapper {
-
+    display: inline-block;
 }
 
 .large-emotes .message-section {

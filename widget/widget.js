@@ -77,7 +77,7 @@ const convertMessageContentsArrayToHtml = (messageContentsArray, emoteSize) => {
             parsedElements.push(`<span class="text">${data}</span>`);
             return;
         }
-        if(isEmoteZeroWidth(data) && data.rendered){
+        if(isEmoteZeroWidth(data.name) && data.rendered){
             return;
         }
         let nextElementIndex = index + 1;
@@ -89,13 +89,15 @@ const convertMessageContentsArrayToHtml = (messageContentsArray, emoteSize) => {
             nextElementIndex++;
             nextElement = messageContentsArray[nextElementIndex];
         }
+        const mainEmote = `<img src="${getUrlFromEmoteSizeAndData(data, emoteSize)}" class="emote" />`;
         if(children.length === 0){
-            parsedElements.push(`<img src="${getUrlFromEmoteSizeAndData(data, emoteSize)}" class="emote" />`)
+            parsedElements.push(mainEmote)
             return;
         }
         parsedElements.push(`
             <div class="complex-emote">
-                ${[data, ...children].map(src => `<img src="${getUrlFromEmoteSizeAndData(src, emoteSize)}" class="emote" />`)}
+                ${mainEmote}
+                ${children.map(src => `<img src="${getUrlFromEmoteSizeAndData(src, emoteSize)}" class="emote zero-width" />`).join('\n')}
             </div>
         `);
     });
@@ -136,7 +138,7 @@ const createMessageHtml = ({
 
 const createRaidMessageHtml = ({
                                    displayName, msgId, amount
-}) => {
+                               }) => {
     // don't mess with data-message-id, data-user-id or the chat-message class name
     return `
         <div data-message-id="${msgId}" class="chat-message raid-message">
@@ -148,8 +150,8 @@ const createRaidMessageHtml = ({
 };
 
 const createSubMessageHtml = ({
-                                   displayName, msgId
-                               }) => {
+                                  displayName, msgId
+                              }) => {
     // don't mess with data-message-id, data-user-id or the chat-message class name
     return `
         <div data-message-id="${msgId}" class="chat-message sub-message">
@@ -161,8 +163,8 @@ const createSubMessageHtml = ({
 };
 
 const createFollowerMessageHtml = ({
-                                  displayName, msgId
-                              }) => {
+                                       displayName, msgId
+                                   }) => {
     // don't mess with data-message-id, data-user-id or the chat-message class name
     return `
         <div data-message-id="${msgId}" class="chat-message follower-message">
