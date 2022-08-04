@@ -400,7 +400,7 @@ const createAndShowMessage = (event) => {
 
     const messageContentsArray = processMessageText(htmlEncode(text), emotes);
     const emoteSize = calcEmoteSize(messageContentsArray);
-    const eventClasses = getClassFromEventData({userId, badges, name});
+    const eventClasses = getClassFromEventData({userId, badges, name: displayName});
 
     const html = createMessageHtml({
         badges, userId, displayName, messageContentsArray, msgId, color, emoteSize, eventClasses
