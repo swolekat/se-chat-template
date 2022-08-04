@@ -224,7 +224,7 @@ const shouldNotShowMessage = ({text, name ,nick}) => {
         return true;
     }
     const names = [name.toLowerCase() , nick.toLowerCase()];
-    if(data.ignoreUserList.some(user => names.includes(user.toLowerCase))){
+    if(data.ignoreUserList.some(user => names.includes(user.toLowerCase()))){
         return true;
     }
     return false;
