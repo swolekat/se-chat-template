@@ -373,8 +373,19 @@ const showMessage = (msgId, html) => {
     }, 1000);
 };
 
+const altColors = [
+    '#FF4A80', '#FF7070', '#FA8E4B', '#FEE440',
+    '#5FFF77', '#00F5D4', '#00BBF9', '#4371FB',
+    '#9B5DE5', '#F670DD',
+];
+
+const getColorBasedOnId = (userId) => {
+    const number = Number.parseInt(userId, 10);
+    return altColors[number % altColors.length];
+};
+
 const createAndShowMessage = (event) => {
-    const {
+    let {
         badges = [],
         userId = '',
         displayName = '',
@@ -383,6 +394,9 @@ const createAndShowMessage = (event) => {
         msgId = '',
         displayColor: color
     } = event.data;
+    if(!color){
+        color = getColorBasedOnId(userId);
+    }
 
     const messageContentsArray = processMessageText(htmlEncode(text), emotes);
     const emoteSize = calcEmoteSize(messageContentsArray);
@@ -419,8 +433,8 @@ const onMessage = (event) => {
 
 /* other events */
 const onRaid = (event) => {
-    const name = event?.event?.name;
-    const amount = event?.event?.amount;
+    const name = event?.name;
+    const amount = event?.amount;
     data.latestRaider = name;
     if(!data.raidMessages){
         return;
@@ -451,7 +465,7 @@ const onDeleteMessages = (event) => {
 };
 
 const onFollower = (event) => {
-    const name = event?.event?.name;
+    const name = event?.name;
     data.latestFollower = name;
     if(!data.followMessages){
         return;
@@ -462,7 +476,7 @@ const onFollower = (event) => {
 };
 
 const onSubscriber = (event) => {
-    const name = event?.event?.name;
+    const name = event?.name;
     data.latestSubscriber = name;
     if(!data.subMessages){
         return;
@@ -473,7 +487,7 @@ const onSubscriber = (event) => {
 };
 
 const onCheer = (event) => {
-    const name = event?.event?.name;
+    const name = event?.name;
     data.latestCheerer = name;
 };
 
@@ -496,4 +510,4 @@ window.addEventListener('onEventReceived', obj => {
         return;
     }
     handler(event);
-});
+})
