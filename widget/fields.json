@@ -1,4 +1,14 @@
 {
+  "ignoreLinks": {
+    "label": "Ignore Links?",
+    "group": "Presentation Options",
+    "type": "dropdown",
+    "value": "true",
+    "options": {
+      "true": "Yes",
+      "false": "No"
+    }
+  },
   "largeEmotes": {
     "label": "Larger emotes for emote messages?",
     "group": "Presentation Options",

@@ -214,12 +214,16 @@ const processFieldData = (fieldData) => {
     data.followMessages = fieldData.followMessages === 'true';
     data.ignoreUserList = fieldData.ignoreUserList.split(',');
     data.ignorePrefixList = fieldData.ignorePrefixList.split(',');
+    data.ignoreLinks = fieldData.ignoreLinks.split(',');
     data.lifetime = fieldData.lifetime;
 };
 
 /* message handling */
 
 const shouldNotShowMessage = ({text, name ,nick}) => {
+    if(data.ignoreLinks && (text.toLowerCase().includes('http:') || text.toLowerCase().includes('https:'))) {
+        return true;
+    }
     if(data.ignorePrefixList.some(prefix => text.startsWith(prefix))){
         return true;
     }
