@@ -19,6 +19,16 @@
       "false": "No"
     }
   },
+  "emojiAsEmotes": {
+    "label": "Treat Emojis as emotes?",
+    "group": "Presentation Options",
+    "type": "dropdown",
+    "value": "true",
+    "options": {
+      "true": "Yes",
+      "false": "No"
+    }
+  },
   "raidMessages": {
     "label": "Show Messages for Raids?",
     "group": "Presentation Options",
