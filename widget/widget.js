@@ -251,8 +251,8 @@ const processMessageText = (text, emotes) => {
     const hasNoEmotes = !emotes || emotes.length === 0;
     let isPlainText = hasNoEmotes;
     if(data.emojiAsEmotes){
-        const numberOfEmojis = text.match(emojiRegex).lenght;
-        isPlainText = isPlainText || numberOfEmojis > 0;
+        const hasEmojis = text.match(emojiRegex);
+        isPlainText = isPlainText && !hasEmojis;
     }
 
     if (isPlainText) {

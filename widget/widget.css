@@ -109,12 +109,16 @@ animation: fade reverse .5s,
     max-height: 112px;
 }
 
+.emoji {
+    vertical-align: top;
+}
+
 .large-emotes .emoji {
     font-size: 112px;
 }
 
 .medium-emotes .emoji {
-    font-size: 3.5rem;
+    font-size: 62px;
     max-height: 112px;
 }
 
